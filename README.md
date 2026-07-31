@@ -112,6 +112,23 @@ multi-table joins, and traffic on the two paths grows differently:
   balancer, keep total pool usage across all of them under MongoDB's own
   connection ceiling.
 
+## Deploying on Render
+
+This repo includes a `render.yaml` file for deploying the frontend, Node API,
+and Java fare engine as separate Render web services.
+
+1. Create a MongoDB Atlas database and copy its connection string.
+2. Push this repo to GitHub.
+3. In Render, create a new "Blueprint" app and connect this repository.
+4. Render will create the three services from `render.yaml`.
+5. Set these environment variables in the Render dashboard for the Node service:
+   - `MONGODB_URI=<your Atlas connection string>`
+   - `JAVA_FARE_SERVICE_URL=https://<your-java-service>.onrender.com/api/fare/calculate`
+   - `ADMIN_USERS=admin:admin123:admin`
+   - `ADMIN_SESSION_SECRET=<any-long-random-string>`
+6. In the frontend service, set `NEXT_PUBLIC_API_URL=https://<your-node-service>.onrender.com`.
+7. Deploy the services and open the frontend URL.
+
 ## Notes / next steps
 
 This is a working starter, not a production system. Things you'd still want
