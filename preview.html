@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Rastaa Cabs — preview</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          road: "#12141C", roadline: "#1D2030", taxi: "#F4C430",
+          "taxi-dark": "#D9A916", meter: "#35D07F", paper: "#F6F3EA",
+          steel: "#8B93A7", alert: "#E5484D",
+        },
+        fontFamily: {
+          display: ["'Archivo Black'", "sans-serif"],
+          body: ["'Work Sans'", "sans-serif"],
+          mono: ["'JetBrains Mono'", "monospace"],
+        },
+        backgroundImage: {
+          "dash-line": "repeating-linear-gradient(90deg, #F4C430 0px, #F4C430 24px, transparent 24px, transparent 44px)",
+        },
+      },
+    },
+  };
+</script>
+<style>
+  body { font-family: 'Work Sans', sans-serif; }
+  .meter-glow { text-shadow: 0 0 8px rgba(53,208,127,0.55); }
+</style>
+</head>
+<body class="bg-road">
+
+<header class="sticky top-0 z-40 bg-road/95 backdrop-blur border-b border-roadline">
+  <div class="max-w-6xl mx-auto flex items-center justify-between px-5 py-4">
+    <a href="#top" class="flex items-center gap-2">
+      <span class="w-8 h-8 rounded-sm bg-taxi flex items-center justify-center font-display text-road text-sm">R</span>
+      <span class="font-display text-paper text-lg tracking-tight">RASTAA</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest text-steel">
+      <a href="#book" class="hover:text-taxi transition-colors">Book a cab</a>
+      <a href="#fleet" class="hover:text-taxi transition-colors">Fleet &amp; fares</a>
+      <a href="#routes" class="hover:text-taxi transition-colors">Routes</a>
+      <a href="#faq" class="hover:text-taxi transition-colors">FAQ</a>
+    </nav>
+    <a href="#book" class="font-mono text-xs uppercase tracking-widest bg-taxi text-road px-4 py-2 rounded-sm font-bold hover:bg-taxi-dark transition-colors">Book now</a>
+  </div>
+</header>
+
+<section class="relative overflow-hidden pt-16 pb-28">
+  <div class="absolute inset-x-0 top-1/2 h-[2px] bg-dash-line opacity-20"></div>
+  <div class="max-w-4xl mx-auto text-center px-5">
+    <p class="font-mono text-taxi text-xs uppercase tracking-[0.3em] mb-4">Upfront fares · No surge · No surprises</p>
+    <h1 class="font-display text-paper text-4xl md:text-6xl leading-tight tracking-tight">Every fare, metered<br />before you get in.</h1>
+    <p class="font-body text-steel text-base md:text-lg mt-5 max-w-xl mx-auto">Outstation, local and airport cabs across North India. Pick a cab type, watch the meter settle on your price, and confirm in under a minute.</p>
+  </div>
+</section>
+
+<div id="book" class="bg-paper rounded-lg shadow-2xl shadow-black/40 p-5 md:p-6 -mt-16 relative z-10 max-w-4xl mx-auto">
+  <div class="flex flex-wrap gap-2 mb-5">
+    <button class="font-mono text-[11px] uppercase tracking-widest px-3 py-2 rounded-sm border bg-road text-taxi border-road">Outstation · One way</button>
+    <button class="font-mono text-[11px] uppercase tracking-widest px-3 py-2 rounded-sm border bg-transparent text-road/70 border-road/20">Outstation · Round trip</button>
+    <button class="font-mono text-[11px] uppercase tracking-widest px-3 py-2 rounded-sm border bg-transparent text-road/70 border-road/20">Local / Hourly</button>
+    <button class="font-mono text-[11px] uppercase tracking-widest px-3 py-2 rounded-sm border bg-transparent text-road/70 border-road/20">Airport transfer</button>
+  </div>
+
+  <div class="grid md:grid-cols-12 gap-4">
+    <label class="md:col-span-3 flex flex-col gap-1">
+      <span class="font-mono text-[10px] uppercase tracking-widest text-road/60">Pickup city</span>
+      <select id="fromCity" class="border border-road/20 rounded-sm px-3 py-2 bg-white text-road font-medium">
+        <option>Chandigarh</option><option>Ludhiana</option><option>Delhi</option><option>Mohali</option>
+      </select>
+    </label>
+    <label class="md:col-span-3 flex flex-col gap-1">
+      <span class="font-mono text-[10px] uppercase tracking-widest text-road/60">Drop city</span>
+      <select id="toCity" class="border border-road/20 rounded-sm px-3 py-2 bg-white text-road font-medium">
+        <option>Delhi</option><option>Chandigarh</option><option>Shimla</option><option>Amritsar</option>
+      </select>
+    </label>
+    <label class="md:col-span-3 flex flex-col gap-1">
+      <span class="font-mono text-[10px] uppercase tracking-widest text-road/60">Pickup date</span>
+      <input type="date" class="border border-road/20 rounded-sm px-3 py-2 bg-white text-road font-medium" />
+    </label>
+    <label class="md:col-span-3 flex flex-col gap-1">
+      <span class="font-mono text-[10px] uppercase tracking-widest text-road/60">Approx. distance (km)</span>
+      <input id="distanceInput" type="number" min="1" value="247" class="border border-road/20 rounded-sm px-3 py-2 bg-white text-road font-medium font-mono" />
+    </label>
+
+    <label class="md:col-span-7 flex flex-col gap-1">
+      <span class="font-mono text-[10px] uppercase tracking-widest text-road/60">Cab type</span>
+      <select id="cabType" class="border border-road/20 rounded-sm px-3 py-2 bg-white text-road font-medium">
+        <option value="700|50|17.5">Hatchback — Swift, Tiago or similar</option>
+        <option value="875|50|13" selected>Sedan — Dzire, Etios or similar</option>
+        <option value="1400|50|15">SUV — Ertiga, Xylo or similar</option>
+        <option value="1540|50|18.5">Prime Sedan — Amaze, Etios or similar</option>
+        <option value="1925|50|21">Prime SUV — Innova Crysta or similar</option>
+      </select>
+    </label>
+
+    <div class="md:col-span-5">
+      <div class="bg-road rounded-md border border-roadline px-5 py-4 flex items-end justify-between">
+        <div>
+          <p class="font-mono text-[10px] uppercase tracking-widest text-steel mb-1">Estimated fare</p>
+          <p id="fareOut" class="font-mono text-4xl text-meter meter-glow tabular-nums">₹2,989</p>
+        </div>
+        <p class="font-mono text-[10px] text-steel text-right leading-relaxed">incl. taxes on booking</p>
+      </div>
+    </div>
+
+    <div class="md:col-span-12 pt-1">
+      <button class="bg-taxi hover:bg-taxi-dark text-road font-mono text-xs uppercase tracking-widest font-bold px-6 py-3 rounded-sm transition-colors">Search cabs</button>
+    </div>
+  </div>
+</div>
+
+<section id="fleet" class="max-w-6xl mx-auto px-5 pt-24 pb-6">
+  <div class="flex items-end justify-between mb-6">
+    <h2 class="font-display text-paper text-2xl">Fleet &amp; fares</h2>
+    <p class="font-mono text-[10px] uppercase tracking-widest text-steel">5 cab types</p>
+  </div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="bg-roadline/60 border border-roadline rounded-md p-5 flex flex-col gap-4">
+      <div class="flex items-start justify-between">
+        <div><p class="font-display text-paper text-base">Hatchback</p><p class="font-body text-steel text-xs mt-1">Swift, Tiago or similar</p></div>
+        <span class="font-mono text-[10px] uppercase tracking-widest text-taxi border border-taxi/40 rounded-sm px-2 py-1">4 seats</span>
+      </div>
+      <div class="font-mono text-xs text-steel flex flex-col gap-1">
+        <div class="flex justify-between"><span>Base fare</span><span class="text-paper">₹700</span></div>
+        <div class="flex justify-between"><span>Included</span><span class="text-paper">50 km</span></div>
+        <div class="flex justify-between"><span>Extra fare</span><span class="text-paper">₹17.5/km</span></div>
+      </div>
+      <a href="#book" class="mt-auto text-center font-mono text-[11px] uppercase tracking-widest bg-taxi text-road font-bold rounded-sm py-2">Select</a>
+    </div>
+    <div class="bg-roadline/60 border border-roadline rounded-md p-5 flex flex-col gap-4">
+      <div class="flex items-start justify-between">
+        <div><p class="font-display text-paper text-base">Sedan</p><p class="font-body text-steel text-xs mt-1">Dzire, Etios or similar</p></div>
+        <span class="font-mono text-[10px] uppercase tracking-widest text-taxi border border-taxi/40 rounded-sm px-2 py-1">4 seats</span>
+      </div>
+      <div class="font-mono text-xs text-steel flex flex-col gap-1">
+        <div class="flex justify-between"><span>Base fare</span><span class="text-paper">₹875</span></div>
+        <div class="flex justify-between"><span>Included</span><span class="text-paper">50 km</span></div>
+        <div class="flex justify-between"><span>Extra fare</span><span class="text-paper">₹13/km</span></div>
+      </div>
+      <a href="#book" class="mt-auto text-center font-mono text-[11px] uppercase tracking-widest bg-taxi text-road font-bold rounded-sm py-2">Select</a>
+    </div>
+    <div class="bg-roadline/60 border border-roadline rounded-md p-5 flex flex-col gap-4">
+      <div class="flex items-start justify-between">
+        <div><p class="font-display text-paper text-base">SUV</p><p class="font-body text-steel text-xs mt-1">Ertiga, Xylo or similar</p></div>
+        <span class="font-mono text-[10px] uppercase tracking-widest text-taxi border border-taxi/40 rounded-sm px-2 py-1">6 seats</span>
+      </div>
+      <div class="font-mono text-xs text-steel flex flex-col gap-1">
+        <div class="flex justify-between"><span>Base fare</span><span class="text-paper">₹1,400</span></div>
+        <div class="flex justify-between"><span>Included</span><span class="text-paper">50 km</span></div>
+        <div class="flex justify-between"><span>Extra fare</span><span class="text-paper">₹15/km</span></div>
+      </div>
+      <a href="#book" class="mt-auto text-center font-mono text-[11px] uppercase tracking-widest bg-taxi text-road font-bold rounded-sm py-2">Select</a>
+    </div>
+  </div>
+</section>
+
+<section id="routes" class="max-w-6xl mx-auto px-5 pt-20 pb-6">
+  <h2 class="font-display text-paper text-2xl mb-6">Popular routes</h2>
+  <div class="overflow-x-auto rounded-md border border-roadline">
+    <table class="w-full text-left border-collapse min-w-[560px]">
+      <thead>
+        <tr class="bg-roadline/60 font-mono text-[10px] uppercase tracking-widest text-steel">
+          <th class="px-4 py-3">Route</th><th class="px-4 py-3">Distance</th><th class="px-4 py-3">Duration</th><th class="px-4 py-3 text-right">Starting fare</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-t border-roadline font-body text-sm text-paper">
+          <td class="px-4 py-3">Chandigarh <span class="text-steel">→</span> Delhi</td>
+          <td class="px-4 py-3 font-mono text-steel">247 km</td>
+          <td class="px-4 py-3 font-mono text-steel">4h 17m</td>
+          <td class="px-4 py-3 font-mono text-right text-meter">₹2,989</td>
+          <td class="px-4 py-3 text-right"><a href="#book" class="font-mono text-[10px] uppercase tracking-widest text-taxi">Book</a></td>
+        </tr>
+        <tr class="border-t border-roadline font-body text-sm text-paper">
+          <td class="px-4 py-3">Chandigarh <span class="text-steel">→</span> Shimla</td>
+          <td class="px-4 py-3 font-mono text-steel">112 km</td>
+          <td class="px-4 py-3 font-mono text-steel">3h 09m</td>
+          <td class="px-4 py-3 font-mono text-right text-meter">₹1,423</td>
+          <td class="px-4 py-3 text-right"><a href="#book" class="font-mono text-[10px] uppercase tracking-widest text-taxi">Book</a></td>
+        </tr>
+        <tr class="border-t border-roadline font-body text-sm text-paper">
+          <td class="px-4 py-3">Ludhiana <span class="text-steel">→</span> Chandigarh</td>
+          <td class="px-4 py-3 font-mono text-steel">100 km</td>
+          <td class="px-4 py-3 font-mono text-steel">2h 05m</td>
+          <td class="px-4 py-3 font-mono text-right text-meter">₹1,330</td>
+          <td class="px-4 py-3 text-right"><a href="#book" class="font-mono text-[10px] uppercase tracking-widest text-taxi">Book</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-5 pt-20 pb-6">
+  <h2 class="font-display text-paper text-2xl mb-6">Why book with us</h2>
+  <div class="grid sm:grid-cols-3 gap-4">
+    <div class="border border-roadline rounded-md p-5 bg-roadline/40"><p class="font-display text-taxi text-sm mb-2">Free cancellation</p><p class="font-body text-steel text-sm">Cancel up to 6 hours before pickup, no questions asked.</p></div>
+    <div class="border border-roadline rounded-md p-5 bg-roadline/40"><p class="font-display text-taxi text-sm mb-2">Pay the driver</p><p class="font-body text-steel text-sm">Pay 20% now to confirm, the rest to your driver on arrival.</p></div>
+    <div class="border border-roadline rounded-md p-5 bg-roadline/40"><p class="font-display text-taxi text-sm mb-2">No hidden fares</p><p class="font-body text-steel text-sm">Every quote includes GST, state tax and toll estimates.</p></div>
+  </div>
+</section>
+
+<footer class="border-t border-roadline mt-20">
+  <div class="max-w-6xl mx-auto px-5 py-10 grid sm:grid-cols-3 gap-8">
+    <div><p class="font-display text-paper text-sm mb-2">RASTAA</p><p class="font-body text-steel text-sm">Outstation, local and airport cabs across North India.</p></div>
+  </div>
+  <div class="text-center font-mono text-[10px] text-steel/70 pb-6">© 2026 Rastaa Cabs. Demo project — not a real booking service.</div>
+</footer>
+
+<script>
+  function calcFare() {
+    const [base, includedKm, perKm] = document.getElementById('cabType').value.split('|').map(Number);
+    const dist = Number(document.getElementById('distanceInput').value) || 0;
+    const extra = Math.max(0, dist - includedKm);
+    const total = Math.round(base + extra * perKm);
+    document.getElementById('fareOut').textContent = '₹' + total.toLocaleString('en-IN');
+  }
+  document.getElementById('cabType').addEventListener('change', calcFare);
+  document.getElementById('distanceInput').addEventListener('input', calcFare);
+</script>
+
+</body>
+</html>

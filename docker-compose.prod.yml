@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: rastaa-prod-mongo
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: >
+        mongosh --quiet --eval
+        "try { rs.status() } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'localhost:27017'}]}) }"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend-java:
+    build:
+      context: ./backend-java
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+
+  backend-node:
+    build:
+      context: ./backend-node
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+      - backend-java
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/rastaa-cab?replicaSet=rs0
+      - JAVA_FARE_SERVICE_URL=http://backend-java:8080/api/fare/calculate
+      - MONGODB_MAX_POOL_SIZE=20
+      - ADMIN_USERS=admin:admin123:admin
+      - ADMIN_SESSION_SECRET=change-this-secret
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://backend-node:4000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend-node
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://backend-node:4000
+
+volumes:
+  mongo-data:
