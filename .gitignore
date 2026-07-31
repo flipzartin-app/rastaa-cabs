@@ -4,4 +4,5 @@ out/
 target/
 *.class
 .env
+!backend-node/.env
 .DS_Store
