@@ -8,7 +8,7 @@ dns.setServers(['8.8.8.8', '8.8.4.4']);
 async function connectDB() {
   if (isConnected) return mongoose.connection;
 
-  const uri = process.env.MONGODB_URI || "mongodb+srv://outzartofficial_db_user:Hardeep460@cluster0.qkvhxf2.mongodb.net/taxi?appName=Cluster0";
+  const uri = process.env.MONGODB_URI || "mongodb+srv://outzartofficial_db_user:Hardeep460@cluster0.qkvhxf2.mongodb.net/?appName=Cluster0";
 
 
   await mongoose.connect(uri, {
