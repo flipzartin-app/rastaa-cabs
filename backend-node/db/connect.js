@@ -5,13 +5,11 @@ const dns = require('dns');
 let isConnected = false;
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
-async function connectDB() {
-  if (isConnected) return mongoose.connection;
-
+const connectDB = async () => {
   const conn = await mongoose.connect(process.env.MONGO_URI);
-
-
-  await mongoose.connect(uri, {
+  console.log(`MongoDB connected: ${conn.connection.host}`);
+  return conn;
+}; {
     // Connection pooling — reuse sockets instead of opening one per request.
     // Raise this on the API instance handling the most concurrent traffic;
     // total pool usage across all Node instances should stay under MongoDB's
