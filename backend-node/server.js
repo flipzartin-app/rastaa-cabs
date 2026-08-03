@@ -41,7 +41,7 @@ async function start() {
   app.listen(PORT, () => {
     console.log(`Rastaa Cabs Node API listening on http://localhost:${PORT}`);
     console.log(
-      `Fare requests are forwarded to ${process.env.JAVA_FARE_SERVICE_URL || "http://localhost:8080/api/fare/calculate"}`
+      `Fare requests are forwarded to ${process.env.JAVA_FARE_SERVICE_URL || "https://rastaa-cabs.onrender.com/api/fare/calculate"}`
     );
   });
 }
