@@ -4,7 +4,7 @@ const { CAB_TYPES } = require("../data/cabTypes");
 const router = express.Router();
 
 const JAVA_FARE_SERVICE_URL =
-  process.env.JAVA_FARE_SERVICE_URL || "http://localhost:8080/api/fare/calculate";
+  process.env.JAVA_FARE_SERVICE_URL || "https://rastaa-cabs.onrender.com/api/fare/calculate";
 
 function localEstimate(cabTypeId, distanceKm) {
   const cab = CAB_TYPES.find((c) => c.id === cabTypeId) || CAB_TYPES[0];
